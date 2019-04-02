@@ -1,0 +1,63 @@
+--- # terraform playbook
+
+- hosts: local
+  user: "{{ user }}"
+  connection: local
+  gather_facts: no
+
+  vars:
+    region: 'ap-south-1'
+    amicount: "2"
+    ami: "ami-06bcd1131b2f55803"
+    instance_type: "t2.micro"
+    user: prashanttiwari
+    user_home: /Users/prashanttiwari
+
+  tasks:
+  - name: setting up vars template for terraform
+    template:
+      src: "{{ user_home }}/Desktop/terraform/terraform.tfvars.j2"
+      dest: "{{ user_home }}/Desktop/terraform/terraform.tfvars"
+      owner: "{{ user }}"
+      group: staff
+      mode: 0755
+    tags:
+       - always
+
+  - name: terraform plan
+    terraform:
+      binary_path: '{{ user_home }}/terraform'
+      project_path: '{{ user_home }}/Desktop/terraform/'
+      plan_file: '{{ user_home }}/Desktop/terraform/plan.tfplan'
+      state: planned
+      force_init: true
+      backend_config:
+        bucket: "sopara"
+        key: "terraform.tfstate"
+        region: "ap-south-1"
+    tags:
+       - plan
+
+  - name: wait for .tfplan plan
+    wait_for:
+      path: '{{ user_home }}/Desktop/terraform/plan.tfplan'
+      state: present
+    tags:
+       - always
+
+  - name: terraform apply
+    terraform:
+      binary_path: '{{ user_home }}/terraform'
+      project_path: '{{ user_home }}/Desktop/terraform/'
+      state: present
+    tags:
+       - execute
+
+  - name: terraform apply
+    terraform:
+      binary_path: '{{ user_home }}/terraform'
+      project_path: '{{ user_home }}/Desktop/terraform/'
+      plan_file: '{{ user_home }}/Desktop/terraform/plan.tfplan'
+      state: present
+    tags:
+       - tfplan

@@ -1,0 +1,17 @@
+Flux7 home assignment
+
+
+Assignment:
+Ansible ( 2.5+) has recently released a module for terraform. Please create an Ansible playbook to deploy terraform projects including deciding appropriate parameters to provide a good balance between usability and customisability. This playbook is intended to be run within a Jenkins pipeline.
+
+
+Think about it as a generic playbook to deploy any terraform project. The idea is to have various capabilities like
+  - Ability to set backend configuration during runtime - done.
+  - Ability to pass terraform variables through ansible vars - done
+
+Have a way to create:
+   - 	Only terraform plan and not execute it  (for example, this can be used to create a manual approval stage) - done
+   - 	Create the plan and execute it - done
+   - 	Just execute a plan that has been created earlier - done
+
+If you think the new module lacks these capabilities. please mention them in detail.
