@@ -34,3 +34,4 @@ override.tf.json
 .git
 .terraform/
 *.retry
+flux7.txt
