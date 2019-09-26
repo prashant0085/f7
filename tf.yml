@@ -53,7 +53,7 @@
     tags:
        - execute
 
-  - name: terraform apply
+  - name: terraform apply using .tfplan file
     terraform:
       binary_path: '{{ user_home }}/terraform'
       project_path: '{{ user_home }}/Desktop/terraform/'
